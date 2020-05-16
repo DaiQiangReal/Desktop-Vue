@@ -1,6 +1,7 @@
 <template>
   <div id="desktopContent">
-      desktopContent
+      <button @click="tests">test</button>
+      <span v-text="test"/>
   </div>
 </template>
 
@@ -10,6 +11,29 @@ export default {
     data(){
         return{
             
+        }
+    },
+    computed:{
+        windowShown(){
+            return this.$store.windowShown;
+        }
+    },
+    watch:{
+        windowShown(newd,old){
+            
+        }
+    },
+    methods:{
+        showWindow(windowName){
+            this.$store.commit("showWindow",windowName);
+        },
+        hideWindow(windowName){
+            this.$store.commit("hideWindow",windowName);
+        },
+        isShown(windowName){
+            if(this.windowShown.indexOf(windowName)===-1)
+                return false;
+            return true;
         }
     }
 }

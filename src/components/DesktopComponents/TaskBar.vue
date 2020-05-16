@@ -1,26 +1,37 @@
 <template>
     <div id="taskBar">
-        <div id="taskBarContent" v-for="app in applicationList" :key="app.name">
-                <!-- <TodoList :nameShow=false /> -->
-               
+        <div id="taskBarContent" >
+            <div id="application" v-for="app in applicationList" :key="app.name">
+                <span :is="app.name" ref="applicationIcon" 
+                @click.native="e=>applicationIconClicked(e)"/>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import TodoList from "../Application/TodoList/TodoList"
+import TodoListIcon from "../Application/TodoList/TodoListIcon";
 export default {
     name: "TaskBar",
     data() {
+
         return {
-            applicationList:[TodoList],
+            applicationList: [TodoListIcon,]
         };
     },
     components: {
-        TodoList
+        TodoListIcon
     },
+    methods:{
+        applicationIconClicked(event){
+            let applicationIcon=this.$refs.applicationIcon;
+            applicationIcon[0].clicked();
+            this.
+            
+        }
+    }
     // https://blog.csdn.net/SevenSongyun/article/details/103803627
-   
+    //https://www.jb51.net/article/134664.htm
 };
 </script>
 
@@ -34,17 +45,18 @@ export default {
         width: 50vw;
         min-height: 8vh;
         border-radius: 15px;
-        background-color: rgba(255,255,255,0.3);
+        background-color: rgba(255, 255, 255, 0.3);
         backdrop-filter: blur(25px);
-        transition:  0.3s ease 0s;
+        transition: 0.3s ease 0s;
         overflow: hidden;
         display: flex;
-        padding: ;
-        &:hover{
-            background-color: rgba(255,255,255,0.5);
-        
+        padding: 0.5em 0.5em 0.5em 0.5em;
+        &:hover {
+            // background-color: rgba(255,255,255,0.5);
         }
-        
+        #application {
+            margin: 0 0.5em 0 0.5em;
+        }
     }
 }
 </style>>
