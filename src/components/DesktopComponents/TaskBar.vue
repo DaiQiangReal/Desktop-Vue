@@ -3,7 +3,7 @@
         <div id="taskBarContent" >
             <div id="application" v-for="app in applicationList" :key="app.name">
                 <span :is="app.name" ref="applicationIcon" 
-                @click.native="e=>applicationIconClicked(e)"/>
+                @click.native="e=>applicationIconClicked(e,app.name)"/>
             </div>
         </div>
     </div>
@@ -11,6 +11,7 @@
 
 <script>
 import TodoListIcon from "../Application/TodoList/TodoListIcon";
+
 export default {
     name: "TaskBar",
     data() {
@@ -22,13 +23,19 @@ export default {
     components: {
         TodoListIcon
     },
+    computed:{
+        application(){return this.$store.state.application;}
+    },
     methods:{
-        applicationIconClicked(event){
-            let applicationIcon=this.$refs.applicationIcon;
-            applicationIcon[0].clicked();
-            this.
-            
-        }
+        applicationIconClicked(event,applicationIconName){
+            let applicationName=applicationIconName.slice(0,-4)
+            console.log(applicationName);
+            if(this.application[applicationName].running){
+                this.$store.commit("runApplication",applicationName);
+            }else{
+                this.$store.commit("showWindow",applicationName);
+            }
+        },
     }
     // https://blog.csdn.net/SevenSongyun/article/details/103803627
     //https://www.jb51.net/article/134664.htm

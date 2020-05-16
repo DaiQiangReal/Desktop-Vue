@@ -1,49 +1,42 @@
 <template>
-  <div id="desktopContent">
-      <button @click="tests">test</button>
-      <span v-text="test"/>
-  </div>
+    <div id="desktopContent">
+        <div id="application" v-for="(object,name,index) in application" :key="name">
+            <span :is="name+'Window'" v-if="isShown(name)" :style="{'z-index':object.zIndex}" />
+        </div>
+    </div>
 </template>
 
 <script>
+import TodoListWindow from "../Application/TodoList/TodoListWindow";
 export default {
-    name:"DesktopContent",
-    data(){
-        return{
-            
-        }
+    name: "DesktopContent",
+    data() {
+        return {};
     },
-    computed:{
-        windowShown(){
-            return this.$store.windowShown;
-        }
+    components: {
+        TodoListWindow
     },
-    watch:{
-        windowShown(newd,old){
-            
-        }
-    },
-    methods:{
-        showWindow(windowName){
-            this.$store.commit("showWindow",windowName);
+    computed: {
+        application() {
+            return this.$store.state.application;
         },
-        hideWindow(windowName){
-            this.$store.commit("hideWindow",windowName);
-        },
-        isShown(windowName){
-            if(this.windowShown.indexOf(windowName)===-1)
-                return false;
-            return true;
+        // watch: {},
+        
+    },methods: {
+            isShown(applicationName) {
+                return this.application[applicationName].shown;
+            },
+            topWindow(applicationName) {
+                this.$store.commit("showWindow", applicationName);
+            }
         }
-    }
-}
+};
 </script>
 
 <style lang="less" scoped>
-#desktopContent{
-    width:100vw;
-    height:88vh;
+#desktopContent {
+    width: 100vw;
+    height: 88vh;
     // border: 1px solid red;
- 
 }
 </style>>

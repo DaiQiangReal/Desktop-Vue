@@ -1,7 +1,8 @@
 <template>
   <div id="window">
       <div>
-          TodoListWindow
+          <button @click="showWindow">show</button>
+          <button @click="hideWindow">hide</button>
       </div>
   </div>
 </template>
@@ -12,8 +13,21 @@ export default {
     props:[],
     data(){
         return{
-            msg:"TodoListWindow"
+            windowName:"TodoListWindow"
         }
+    },
+    computed:{
+        applicationName(){
+            return this.windowName.slice(0,-6);
+        }
+    },
+    methods:{
+        showWindow(){
+            this.$store.commit("showWindow",this.applicationName);
+        },
+        hideWindow(){
+            this.$store.commit("hideWindow",this.applicationName);
+        },
     }
 }
 </script>
