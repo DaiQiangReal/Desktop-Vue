@@ -29,11 +29,14 @@ export default {
     methods:{
         applicationIconClicked(event,applicationIconName){
             let applicationName=applicationIconName.slice(0,-4)
-            console.log(applicationName);
+
             if(this.application[applicationName].running){
                 this.$store.commit("runApplication",applicationName);
             }else{
-                this.$store.commit("showWindow",applicationName);
+                if(this.$store.state.application[applicationName].shown){
+                    this.$store.commit("hideWindow",applicationName);
+                }else
+                     this.$store.commit("showWindow",applicationName);
             }
         },
     }
