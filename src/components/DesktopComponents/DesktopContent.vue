@@ -1,9 +1,11 @@
 <template>
     <div id="desktopContent">
-        <div id="application" v-for="(object,name,index) in application" :key="name" :style="windowSize(name)">
+        <div id="application" v-for="(object,name,index) in application" :key="name" 
+        :style="windowPosition(name)">
             <div id="titleBar" v-if="isTitleBarShown(name)" 
             :style="titleBarSize(name)"
-            
+            @mousedown="(e)=>handleWindowDrag(e,name,'down')"
+            @mouseup="(e)=>handleWindowDrag(e,name,'up')"
             >
                 <div id="title" v-text="name" />
                 <div id="controlButton">
@@ -27,7 +29,14 @@ import TodoListWindow from "../Application/TodoList/TodoListWindow";
 export default {
     name: "DesktopContent",
     data() {
-        return {};
+        return {
+            dragData:{
+                isMouseDown:false,
+                originMouseX:0,
+                originMouseY:0,
+                mouseMoveFunc:null
+            }
+        };
     },
     components: {
         TodoListWindow
@@ -50,10 +59,11 @@ export default {
             let width =this.$store.state.application[applicationName].w + "vw";
             return { width };
         },
-        windowSize(applicationName){
+        windowPosition(applicationName){
             let left=this.$store.state.application[applicationName].x+"px";
             let top=this.$store.state.application[applicationName].y+"px";
             return {left,top}
+           
         },
         topWindow(applicationName) {
             this.$store.commit("showWindow", applicationName);
@@ -67,8 +77,31 @@ export default {
         closeButtonClicked(applicationIndex) {
             this.$refs.applicationRefs[applicationIndex].hideWindow();
         },
-        handleWindowDrag(applicationName){
-
+        handleWindowDrag(event,applicationName,action){
+         
+           if(action==="down"){
+               this.dragData.isMouseDown=true;
+                this.dragData.originMouseX=event.x;
+                this.dragData.originMouseY=event.y;
+                this.dragData.mouseMoveFunc=()=>this.handleWindowDrag(window.event,applicationName,"move")
+                addEventListener("mousemove",this.dragData.mouseMoveFunc,false);
+           }
+           if(action==="up"){
+               this.isMouseDown=false;
+               removeEventListener("mousemove",this.dragData.mouseMoveFunc,false);
+           }
+           if(this.dragData.isMouseDown&&action==="move"){
+               let windowX=this.$store.state.application[applicationName].x;
+               let windowY=this.$store.state.application[applicationName].y;
+               let deltaX=event.x-this.dragData.originMouseX;
+               let deltaY=event.y-this.dragData.originMouseY;
+               this.dragData.originMouseX=event.x;
+               this.dragData.originMouseY=event.y;
+               let x=windowX+deltaX;
+               let y=windowY+deltaY;
+               this.$store.commit("changeWindowPosition",{applicationName,x,y})
+    
+           }
         }
     }
 };

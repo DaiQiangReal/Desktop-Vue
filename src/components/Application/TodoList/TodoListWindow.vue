@@ -38,7 +38,7 @@ export default {
             this.$store.commit("closeApplication", this.applicationName);
         },
         changeWindowSize(h,w){
-            this.$stroe.commit("changeWindowSize",this.applicationName,{h,w})
+            this.$stroe.commit("changeWindowSize",{applicationName:this.applicationName,h,w})
         }
     }
 };
