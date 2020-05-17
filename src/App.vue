@@ -21,7 +21,7 @@ export default {
 
 <style>
 #app {
-    
+    overflow: hidden;
 }
 body{
     margin:0;

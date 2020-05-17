@@ -48,7 +48,7 @@ export default {
 #window {
     background-color: honeydew;
     width: 20vw;
-    position: absolute;
+
     height: 20vh;
     border: 1px solid gray;
     box-sizing: border-box;

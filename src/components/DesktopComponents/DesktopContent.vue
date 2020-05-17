@@ -1,7 +1,10 @@
 <template>
     <div id="desktopContent">
-        <div id="application" v-for="(object,name,index) in application" :key="name">
-            <div id="titleBar" v-if="isTitleBarShown(name)" :style="titleBarSize(name)">
+        <div id="application" v-for="(object,name,index) in application" :key="name" :style="windowSize(name)">
+            <div id="titleBar" v-if="isTitleBarShown(name)" 
+            :style="titleBarSize(name)"
+            
+            >
                 <div id="title" v-text="name" />
                 <div id="controlButton">
                     <div id="minButton" @click="minButtonClicked(index)"></div>
@@ -47,6 +50,11 @@ export default {
             let width =this.$store.state.application[applicationName].w + "vw";
             return { width };
         },
+        windowSize(applicationName){
+            let left=this.$store.state.application[applicationName].x+"px";
+            let top=this.$store.state.application[applicationName].y+"px";
+            return {left,top}
+        },
         topWindow(applicationName) {
             this.$store.commit("showWindow", applicationName);
         },
@@ -58,6 +66,9 @@ export default {
         },
         closeButtonClicked(applicationIndex) {
             this.$refs.applicationRefs[applicationIndex].hideWindow();
+        },
+        handleWindowDrag(applicationName){
+
         }
     }
 };
@@ -69,12 +80,14 @@ export default {
     height: 88vh;
     // border: 1px solid red;
     #application {
+        position: relative;
         #titleBar {
             height: 1.2rem;
             width: 20em;
             display: flex;
             flex-direction: row;
             background-color: wheat;
+  
             #title {
                 flex: 1;
                 text-align: center;
