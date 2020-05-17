@@ -1,21 +1,20 @@
 <template>
     <div id="desktopContent">
-        <div id="application"  v-for="(object,name,index) in application" :key="name">
-            <div id="titleBar" v-if="isTitleBarShown(name)">
-                <div id="title" v-text="name"/>
+        <div id="application" v-for="(object,name,index) in application" :key="name">
+            <div id="titleBar" v-if="isTitleBarShown(name)" :style="titleBarSize(name)">
+                <div id="title" v-text="name" />
                 <div id="controlButton">
-                    <div id="minButton" @click="minButtonClicked(index)">
-                        
-                    </div>
-                    <div id="maxButton" @click="maxButtonClicked(index)">
-
-                    </div>
-                    <div id="closeButton" @click="closeButtonClicked(index)">
-
-                    </div>
+                    <div id="minButton" @click="minButtonClicked(index)"></div>
+                    <div id="maxButton" @click="maxButtonClicked(index)"></div>
+                    <div id="closeButton" @click="closeButtonClicked(index)"></div>
                 </div>
             </div>
-            <span :is="name+'Window'" ref="applicationRefs" v-if="isWindowShown(name)" :style="{'z-index':object.zIndex}" />
+            <span
+                :is="name+'Window'"
+                ref="applicationRefs"
+                v-if="isWindowShown(name)"
+                :style="{'z-index':object.zIndex}"
+            />
         </div>
     </div>
 </template>
@@ -25,42 +24,42 @@ import TodoListWindow from "../Application/TodoList/TodoListWindow";
 export default {
     name: "DesktopContent",
     data() {
-        return {
-            
-        };
+        return {};
     },
     components: {
         TodoListWindow
     },
-    mounted(){
-        
-    },
+    mounted() {},
     computed: {
         application() {
             return this.$store.state.application;
-        },
-        // watch: {},
-        
-    },methods: {
-            isWindowShown(applicationName) {
-                return this.application[applicationName].shown;
-            },
-            isTitleBarShown(applicationName){
-                return this.application[applicationName].titleBarShown;
-            },
-            topWindow(applicationName) {
-                this.$store.commit("showWindow", applicationName);
-            },
-            minButtonClicked(applicationIndex){
-                 this.$refs.applicationRefs[applicationIndex].hideWindow();
-            },
-            maxButtonClicked(applicationIndex){
-                this.$refs.applicationRefs[applicationIndex].maxWindow();
-            },
-            closeButtonClicked(applicationIndex){
-                this.$refs.applicationRefs[applicationIndex].hideWindow();
-            }
         }
+        // watch: {},
+    },
+    methods: {
+        isWindowShown(applicationName) {
+            return this.application[applicationName].shown;
+        },
+        isTitleBarShown(applicationName) {
+            return this.application[applicationName].titleBarShown;
+        },
+        titleBarSize(applicationName) {
+            let width =this.$store.state.application[applicationName].w + "vw";
+            return { width };
+        },
+        topWindow(applicationName) {
+            this.$store.commit("showWindow", applicationName);
+        },
+        minButtonClicked(applicationIndex) {
+            this.$refs.applicationRefs[applicationIndex].hideWindow();
+        },
+        maxButtonClicked(applicationIndex) {
+            this.$refs.applicationRefs[applicationIndex].maxWindow();
+        },
+        closeButtonClicked(applicationIndex) {
+            this.$refs.applicationRefs[applicationIndex].hideWindow();
+        }
+    }
 };
 </script>
 
@@ -69,39 +68,36 @@ export default {
     width: 100vw;
     height: 88vh;
     // border: 1px solid red;
-    #application{
-        #titleBar{
-            
+    #application {
+        #titleBar {
             height: 1.2rem;
             width: 20em;
             display: flex;
             flex-direction: row;
             background-color: wheat;
-            #title{
+            #title {
                 flex: 1;
                 text-align: center;
-               
             }
-            #controlButton{
+            #controlButton {
                 display: flex;
-                #minButton{
+                #minButton {
                     height: 1rem;
-                    width:1rem;
+                    width: 1rem;
                     background-color: orange;
                     border-radius: 50%;
                     margin: 0.1rem 0.2rem 0.1rem 0.2rem;
-
                 }
-                #maxButton{
+                #maxButton {
                     height: 1rem;
-                    width:1rem;
+                    width: 1rem;
                     background-color: greenyellow;
                     border-radius: 50%;
                     margin: 0.1rem 0.2rem 0.1rem 0.2rem;
                 }
-                #closeButton{
+                #closeButton {
                     height: 1rem;
-                    width:1rem;
+                    width: 1rem;
                     background-color: red;
                     border-radius: 50%;
                     margin: 0.1rem 0.2rem 0.1rem 0.2rem;
